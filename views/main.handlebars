@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./bootstrap/bootstrap.css" />
+
+  <title>Mercado Web</title>
+</head>
+
+<body>
+
+  {{!--
+  2. Incluir en la vista un parcial que contenga el menú del sitio web y sea renderizado
+  antes del Dashboard.
+  --}}
+
+  {{> Menu }}
+  <h1>Bienvenido al mercado WEB, seleccione sus productos</h1>
+  <div class="container">
+    <div class="row g-2">
+
+
+      {{!--
+      4. Crear un parcial para la sección principal en donde se renderice un helper con el
+      mensaje de bienvenida y se realice una iteración para renderizar un parcial
+      “producto” pasándole como argumento el nombre de cada producto.
+      --}}
+      {{#each lenguajesFrontend}}
+
+
+
+      {{> producto }}
+
+
+      {{/each}}
+
+    </div>
+
+  </div>
+
+  {{> Modal }}
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./js/bootstrap.bundle.min.js"></script>
+  <script>
+    const getCompras = async () => {
+      const { data } = await axios.get("http://localhost:3000/modal");
+      console.log(data);
+      $("#modelid").html("");
+
+      data.forEach((t) => {
+        $("#modalid").append(`
+      <div class="modal-body justify-content-between">
+               
+                <p class="text-secondary"><small><img src="./${t.nombre}.png" class="card-img-top" alt="..."></small></p>
+            </div>
+           `);
+      });
+    };
+
+
+    $('.modalboton').click(function (e) {
+      e.preventDefault();
+      const resultado = e.target.href;
+      console.log(resultado)
+
+
+
+      const AgregarCarrito = async (resu) => {
+        const { data } = await axios.get(resu);
+        console.log(data);
+        $("#myModal").modal("show");
+      };
+
+      AgregarCarrito(resultado);
+      getCompras();
+
+
+
+    });
+
+    getCompras();
+
+
+
+  </script>
+
+</body>
+
+</html>
+
+
+
+
+
+</body>
+
+</html>
